@@ -18,5 +18,6 @@ Under the "code" forder:
 
 # Training & Testing
 Using NTU-60-CS as an example: 
-
+Run backbone_main.py to train the student model, and make sure to modify the configuration file accordingly in backbone_main.py.
 python backbone_main.py
+Note that before training the student model, it is essential to train the corresponding teacher model. Refer to "https://github.com/MartinXM/GAP" for the process of training the teacher model.
