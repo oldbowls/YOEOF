@@ -1,0 +1,51 @@
+work_dir: Ablation/backbone/sub
+
+weights: H:\ntu_paper_data\xsub_weight\runs-94-25117.pt
+
+feeder: feeder.feeder_npy.Feeder
+train_feeder_args:
+  data_path: I:\ntu60\ntu_sub\v5 0-59\train_data_joint.npy
+  label_path: I:\ntu60\ntu_sub\v5 0-59\train_label.pkl
+  debug: False
+
+test_feeder_args:
+  data_path: I:\ntu60\ntu_sub\v5 0-59\val_data_joint.npy
+  label_path: I:\ntu60\ntu_sub\v5 0-59\val_label.pkl
+  debug: False
+
+tea_model: TeacherModel.LST.ctrgcn.Model_lst_4part
+tea_model_args:
+  num_class: 60
+  num_point: 25
+  num_person: 2
+  graph: TeacherModel.LST.graph.ntu_rgb_d.Graph
+  k: 8
+  head: ['ViT-B/32']
+  graph_args:
+    labeling_mode: 'spatial'
+  final_prob: False
+
+stu_model: SgnStudentModel.model.Model
+stu_model_args:
+  num_class: 60
+  num_point: 25
+  num_person: 2
+  in_channels: 3
+  graph: graph.ntu_rgb_d.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+  teacher_model_name: 'lst'
+
+# optim
+weight_decay: 0.0004
+base_lr: 0.05
+step: [10,15]
+
+
+# training
+num_epoch: 20
+device: [0]
+batch_size: 32
+forward_batch_size: 32
+test_batch_size: 32
+nesterov: True

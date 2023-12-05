@@ -1,0 +1,58 @@
+work_dir: 3Dwork/BACKBONE/TtcagcnSsgn/20230518
+
+weights: H:\ntu_paper_data\weight_server_to_local\TCA-GCN-main\ablation1\runs-37-3093.pt
+#checkpoint: model_f/work/20220830/20220830_1/checkpoint/checkpoint-96-fwbz64-60096.pt
+
+# feeder
+feeder: feeder.feeder_npy.Feeder
+train_feeder_args:
+#  data_path: H:\ntu_paper_data\ntu_sub\v5 0-59\val_data_joint.npy
+#  label_path: H:\ntu_paper_data\ntu_sub\v5 0-59\val_label.pkl
+  data_path: H:\ntu_paper_data\ntu_sub\v5 0-59\train_data_joint.npy
+  label_path: H:\ntu_paper_data\ntu_sub\v5 0-59\train_label.pkl
+  debug: False
+
+test_feeder_args:
+  data_path: H:\ntu_paper_data\ntu_sub\v5 0-59\val_data_joint.npy
+  label_path: H:\ntu_paper_data\ntu_sub\v5 0-59\val_label.pkl
+  debug: False
+
+
+# stumodel
+stu_model: SgnStudentModel.model.Model
+stu_model_args:
+  num_class: 60
+  num_point: 25
+  num_person: 2
+  in_channels: 3
+  graph: graph.ntu_rgb_d.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+  teacher_model_name: 'tcagcn'
+
+
+# model
+tea_model: TeacherModel.TCAGCN.tcagcn.Model
+tea_model_args:
+  num_class: 60
+  num_point: 25
+  num_person: 2
+  graph: graph.ntu_rgb_d.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+  final_prob: False
+
+
+# optim
+weight_decay: 0.0004
+base_lr: 0.05
+step: [15,30,45]
+
+
+# training
+num_epoch: 60
+device: [0]
+batch_size: 32
+forward_batch_size: 32
+test_batch_size: 32
+nesterov: True
